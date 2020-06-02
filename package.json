@@ -1,0 +1,16 @@
+{
+  "name": "deaf-tech-bot",
+  "version": "1.0.0",
+  "description": "Code for the DeafTechBot Twitter account bot.",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "author": "ashleemboyer",
+  "dependencies": {
+    "twitter": "^1.7.1"
+  },
+  "engines": {
+    "node": "10.x"
+  }
+}
