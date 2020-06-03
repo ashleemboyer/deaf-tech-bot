@@ -1,12 +1,24 @@
 {
   "name": "deaf-tech-bot",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Code for the DeafTechBot Twitter account bot.",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js"
   },
-  "author": "ashleemboyer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashleemboyer/deaf-tech-bot"
+  },
+  "keywords": [
+    "bot"
+  ],
+  "author": "Ashlee Boyer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashleemboyer/deaf-tech-bot/issues"
+  },
+  "homepage": "https://github.com/ashleemboyer/deaf-tech-bot#readme",
   "dependencies": {
     "express": "^4.17.1",
     "twitter": "^1.7.1"
