@@ -71,4 +71,4 @@ setInterval(() => {
       ? "http://deaf-tech-bot.herokuapp.com/"
       : `http://localhost:${port}`;
   http.get(requestUrl);
-}, 5000);
+}, 300000);
