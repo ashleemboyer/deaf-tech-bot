@@ -2,15 +2,54 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
+const firebase = require("./firebase");
+const port = process.env.PORT || 5000;
+const path = require("path");
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 5000;
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
 
 const Twitter = require("twitter");
 
-app.get("/", (req, res) => res.send("Hello!"));
+app.get("/", (req, res) => {
+  console.log('GET "/"');
+  if (firebase.getCurrentUser()) {
+    console.log('Redirecting to "/admin"');
+    res.redirect(303, "/admin");
+  } else {
+    console.log('Sending file "index.html"');
+    res.sendFile("index.html", { root: __dirname + "/public" });
+  }
+});
+
+app.get("/admin", (req, res) => {
+  console.log('GET "/admin"');
+  setTimeout(() => {
+    console.log("Loading...");
+    const currentUser = firebase.getCurrentUser();
+    if (!currentUser) {
+      console.log('Redirecting to "/"');
+      res.redirect(303, "/");
+    } else {
+      res.send(`Logged in as: ${currentUser.email}`);
+    }
+  }, 1000);
+});
+
+app.post("/admin/signIn", async (req, res) => {
+  console.log('POST "/admin/signIn"');
+  const username = req.body.username;
+  const password = req.body.password;
+
+  await firebase.signIn(username, password);
+
+  console.log('Redirecting to "/admin"');
+  res.redirect(303, "/admin");
+});
 
 app.listen(port, () => {
+  console.log("Running on port", port);
   const client = new Twitter({
     consumer_key: process.env.CONSUMER_KEY,
     consumer_secret: process.env.CONSUMER_SECRET,
@@ -26,6 +65,8 @@ app.listen(port, () => {
     if (!event || event.retweeted_status || event.quoted_status) {
       return;
     }
+
+    console.log(JSON.stringify(event));
 
     const userScreenName = event.user.screen_name;
     const tweetIdString = event.id_str;
